@@ -1,0 +1,1 @@
+{{"£Ò",C_RED},{"£Ç",C_GOLD},{"£Â",C_BLACK},{"£×",C_WHITE},{"£Ï",C_ORANGE},{"£Ì",LimeGreen},{"£Ä",M_DeepSkyBlue},{"£Ú",LightPurple}}
