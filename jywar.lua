@@ -5877,7 +5877,25 @@ function War_Auto()
 	end
 	return 0
 end
-
+-- 升级加点逻辑
+function War_PointChangeCompute(current, tmpN, symbol)
+	local point = tmpN
+	local change = 3
+	if point <= 3 then
+		chance = 1
+	end
+	if current == 1 and JY.Person[pid]["攻击力"] > gj then
+		JY.Person[pid]["攻击力"] = JY.Person[pid]["攻击力"] + change * symbol
+		point = point + change * symbol
+	elseif current == 2 and JY.Person[pid]["防御力"] > fy then
+		JY.Person[pid]["防御力"] = JY.Person[pid]["防御力"] + change * symbol
+		point = point + change * symbol
+	elseif current == 3 and JY.Person[pid]["轻功"] > qg then
+		JY.Person[pid]["轻功"] = JY.Person[pid]["轻功"] + change * symbol
+		point = point + change * symbol
+	end
+	return point
+end
 --人物升级
 function War_AddPersonLVUP(pid)
 	local tmplevel = JY.Person[pid]["等级"]
@@ -6039,7 +6057,7 @@ function War_AddPersonLVUP(pid)
 			break
 		end
 		Cls();
-		ShowPersonStatus_sub(pid, 1, 1, tfid, -17, 1)
+		ShowPersonStatus_sub(pid, 1, 1, tfid, -17, 1, true)
 		DrawString(CC.ScreenW/2-CC.Fontsmall*6-2,20,string.format("可分配点数：%d 点",tmpN) ,C_ORANGE, CC.Fontsmall);
 		for i = 1, 3 do
 			local shade_color = C_GOLD
@@ -6064,33 +6082,15 @@ function War_AddPersonLVUP(pid)
 					current = 1
 				end
 			elseif keypress == VK_LEFT and tmpN < n then
-				if current == 1 and JY.Person[pid]["攻击力"] > gj then
-					JY.Person[pid]["攻击力"] = JY.Person[pid]["攻击力"]-1
-					tmpN = tmpN+1
-				elseif current == 2 and JY.Person[pid]["防御力"] > fy then
-					JY.Person[pid]["防御力"] = JY.Person[pid]["防御力"]-1
-					tmpN = tmpN+1
-				elseif current == 3 and JY.Person[pid]["轻功"] > qg then
-					JY.Person[pid]["轻功"] = JY.Person[pid]["轻功"]-1
-					tmpN = tmpN+1
-				end
+				tmpN = War_PointChangeCompute(current, tmpN, -1)
 			elseif keypress == VK_RIGHT and tmpN > 0 then
-				if current == 1 and JY.Person[pid]["攻击力"] < 520 then
-					JY.Person[pid]["攻击力"] = JY.Person[pid]["攻击力"]+1
-					tmpN = tmpN-1
-				elseif current == 2 and JY.Person[pid]["防御力"] < 520 then
-					JY.Person[pid]["防御力"] = JY.Person[pid]["防御力"]+1
-					tmpN = tmpN-1
-				elseif current == 3 and JY.Person[pid]["轻功"] < 520 then
-					JY.Person[pid]["轻功"] = JY.Person[pid]["轻功"]+1
-					tmpN = tmpN-1
-				end
+				tmpN = War_PointChangeCompute(current, tmpN, 1)
 			elseif keypress==VK_SPACE or keypress==VK_RETURN then
 				if tmpN == 0 or (JY.Person[pid]["攻击力"] == 520 and JY.Person[pid]["防御力"] == 520 and JY.Person[pid]["轻功"] == 520) then
 					Cls();
 					break
 				else
-					DrawStrBoxWaitKey(JY.Person[pid]["姓名"].."请加完剩余的点数!", C_WHITE, CC.DefaultFont)
+					tmpN = War_PointChangeCompute(current, tmpN, 1)
 				end
 			end
 		end
@@ -6103,7 +6103,7 @@ end
 --warStatus 战斗状态
 function War_EndPersonData(isexp, warStatus)
 	--无酒不欢：血量还原函数
-	Health_in_Battle_Reset()
+	--Health_in_Battle_Reset()
 	--无酒不欢：战后状态恢复
 	for i = 0, WAR.PersonNum - 1 do
 		local pid = WAR.Person[i]["人物编号"]
@@ -6121,18 +6121,17 @@ function War_EndPersonData(isexp, warStatus)
 			JY.Person[pid]["生命"] = JY.Person[pid]["生命最大值"]
 			JY.Person[pid]["内力"] = JY.Person[pid]["内力最大值"]
 			JY.Person[pid]["体力"] = CC.PersonAttribMax["体力"]
-			JY.Person[pid]["受伤程度"] = 0
-			JY.Person[pid]["中毒程度"] = 0
+			JY.Person[pid]["受伤程度"] = JY.Person[pid]["受伤程度"] - 20
+			--JY.Person[pid]["中毒程度"] = 0
 			JY.Person[pid]["冰封程度"] = 0
 			JY.Person[pid]["灼烧程度"] = 0
 			--如果有运功，则停止
-			--[[
 			if JY.Person[pid]["主运内功"] ~= 0 then
 				JY.Person[pid]["主运内功"] = 0
 			end
 			if JY.Person[pid]["主运轻功"] ~= 0 then
 				JY.Person[pid]["主运轻功"] = 0
-			end]]
+			end
 			--出战统计
 			JY.Person[pid]["出战"] = JY.Person[pid]["出战"] + 1
 		end
@@ -15711,6 +15710,8 @@ end
 
 --显示武功动画，人物受伤动画，音效等
 function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
+	-- 标记是否暴击伤害
+	local isBaoJiAttack = false
 	--攻击时不显示血条
 	WAR.ShowHP = 0
 	
@@ -15959,6 +15960,7 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 						color = M_DarkOrange
 					else
 						color = RGB(255,40,10);
+						isBaoJiAttack = true
 					end
 					if j > 1 then
 						strs[j] = strs[j];
@@ -16444,13 +16446,13 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 		local area = (clip.x2 - clip.x1) * (clip.y2 - clip.y1)		--绘画的范围
 		local surid = lib.SaveSur(minx, miny, maxx, maxy)		--绘画句柄
 		
-		--显示点数
-		--无酒不欢：一次显示两种状态
+		--显示点数 掉血数字显示
 		for y = 3, hnum-2, 2 do
 			if JY.Restart == 1 then
 				break
 			end
 			local flag = false;
+			local baojiSize = 1.00
 			for i = 5, 15 do
 				local tstart = lib.GetTime()
 				local y_off = i * 2 + CC.DefaultFont + CC.RowPixel
@@ -16465,7 +16467,14 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 							if CONFIG.HPDisplay == 1 then
 								HP_Display_When_Hit(i) --无酒不欢：实时显血
 							end
-							DrawString(clips[j].x1 - string.len(HitXY[j][y])*CC.DefaultFont/4, clips[j].y1 - y_off, HitXY[j][y], Color_Hurt1, CC.DefaultFont)
+							if isBaoJiAttack then
+								if i <= 8 then
+									baojiSize = baojiSize + 0.12
+								else
+									baojiSize = baojiSize - 0.07
+								end
+							end
+							DrawString(clips[j].x1 - string.len(HitXY[j][y])*CC.DefaultFont/4, clips[j].y1 - y_off, HitXY[j][y], Color_Hurt1, CC.DefaultFont * baojiSize)
 						else
 							--无酒不欢：双排显示暂时这样写了
 							local spacing = 0
@@ -16486,7 +16495,7 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 					ShowScreen(1)
 					lib.SetClip(0, 0, 0, 0)
 					local tend = lib.GetTime()
-					if tend - tstart < CC.BattleDelay then
+					if (tend - tstart) < CC.BattleDelay then
 						lib.Delay(CC.BattleDelay - (tend - tstart))
 					end
 				end

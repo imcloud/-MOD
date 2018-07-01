@@ -2192,7 +2192,7 @@ end
 
 --无酒不欢：人物属性面板
 --case：nil=正常浏览，else加点
-function ShowPersonStatus_sub(id, page, istart, tfid, max_row, case, AI_s1, AI_s2, AI_menu_selected,AniFrame,dl)
+function ShowPersonStatus_sub(id, page, istart, tfid, max_row, case, AI_s1, AI_s2, AI_menu_selected,AniFrame,dl, isAddPoint)
 	if JY.Restart == 1 then
 		do return end
 	end
@@ -2670,18 +2670,24 @@ function ShowPersonStatus_sub(id, page, istart, tfid, max_row, case, AI_s1, AI_s
 				end
 			end
 		end
-		
-		DrawAttrib("攻击力", C_WHITE, C_GOLD)
-		DrawString(x1 + size * 4, y1, "↑ " .. str_gain, Violet, size)
-		DrawAttrib("防御力", C_WHITE, C_GOLD)
-		DrawString(x1 + size * 4, y1 + h, "↑ " .. def_gain, Violet, size)
-		DrawAttrib("轻功", C_WHITE, C_GOLD)
-		if agi_gain > -1 then
-			DrawString(x1 + size * 4, y1 + h * 2, "↑ " .. agi_gain, Violet, size)
+		if isAddPoint then
+			DrawAttrib("攻击力", PinkRed, PinkRed)
+			DrawAttrib("防御力", PinkRed, PinkRed)
+			DrawAttrib("轻功", PinkRed, PinkRed)
 		else
-			agi_gain = -(agi_gain)
-			DrawString(x1 + size * 4, y1 + h * 2, "↓ " .. agi_gain, Violet, size)
+			DrawAttrib("攻击力", C_WHITE, C_GOLD)
+			DrawString(x1 + size * 4, y1, "↑ " .. str_gain, Violet, size)
+			DrawAttrib("防御力", C_WHITE, C_GOLD)
+			DrawString(x1 + size * 4, y1 + h, "↑ " .. def_gain, Violet, size)
+			DrawAttrib("轻功", C_WHITE, C_GOLD)
+			if agi_gain > -1 then
+				DrawString(x1 + size * 4, y1 + h * 2, "↑ " .. agi_gain, Violet, size)
+			else
+				agi_gain = -(agi_gain)
+				DrawString(x1 + size * 4, y1 + h * 2, "↓ " .. agi_gain, Violet, size)
+			end
 		end
+		
 		
 		--能力属性
 		DrawAttrib("拳掌功夫", C_WHITE, C_GOLD)
