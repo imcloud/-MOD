@@ -15941,7 +15941,7 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 		kfname = "双人合击·"..kfname
 	end
   
-	--特效文字4和武功名称显示
+	--特效文字4和武功名称显示 暴击 连击 特效显示
 	if wugong > 0 or WAR.hit_DGQB == 1 then				--使用武功时才显示，独孤求败反击也显示
 		if WAR.Person[WAR.CurID]["特效文字4"] ~= nil then
 			local n, strs = Split(WAR.Person[WAR.CurID]["特效文字4"], "·");
@@ -16196,7 +16196,7 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 		if hp ~= nil and (dx == 1 or hp ~= 0) then
 			if hp == 0 then			--显示受到的生命
 				if WAR.Miss[WAR.Person[i]["人物编号"]] ~= nil then
-					HitXY[HitXYNum][3] = "miss"
+					HitXY[HitXYNum][3] = "攻击偏离"
 					WAR.Miss[WAR.Person[i]["人物编号"]] = nil
 				end
 			elseif hp > 0 then
