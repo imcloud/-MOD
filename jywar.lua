@@ -15944,12 +15944,13 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 	--特效文字4和武功名称显示
 	if wugong > 0 or WAR.hit_DGQB == 1 then				--使用武功时才显示，独孤求败反击也显示
 		if WAR.Person[WAR.CurID]["特效文字4"] ~= nil then
-			for i=1, 20 do
-				local n, strs = Split(WAR.Person[WAR.CurID]["特效文字4"], "·");
-				local len = string.len(WAR.Person[WAR.CurID]["特效文字4"]);
-				local color = RGB(255,40,10);
-				local off = 0;
-				for j=1, n do
+			local n, strs = Split(WAR.Person[WAR.CurID]["特效文字4"], "·");
+			local len = string.len(WAR.Person[WAR.CurID]["特效文字4"]);
+			local color = RGB(255,40,10);
+
+			for j=1, n do
+				for i=1, 20 do
+					local off = 0;
 					if strs[j] == "连击" or strs[j] == "天赋外功.炉火纯青" 
 					or strs[j] == "碧箫声里双鸣凤" or strs[j] == "英雄无双风流婿" or strs[j] == "刀光掩映孔雀屏" 
 					or strs[j] == "太极之形.圆转不断" then
@@ -15961,17 +15962,17 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 					end
 					if j > 1 then
 						strs[j] = strs[j];
-						off = off + 42
+						off = off + 48
 					end		
 					DrawStrBox(-1, 10 + off, strs[j], color, 20+i) 
 					--off = off + string.len(strs[j])*(CC.DefaultFont+i/2)/4 + (CC.DefaultFont+i/2)*3/2;
+					ShowScreen()
+					lib.Delay(16)
+					if i == 20 then
+						lib.Delay(300)
+					end
+					Cls()
 				end
-				ShowScreen()
-				lib.Delay(16)
-				if i == 20 then
-					lib.Delay(300)
-				end
-				Cls()
 			end
 		end
 		--武功显示
