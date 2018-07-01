@@ -238,7 +238,7 @@ function StartMenu()
 		end
 		--畅想杨过初始场景
 		if JY.Base["畅想"] == 58 then
-			JY.SubScene = 18
+			JY.SubScene = 41
 			JY.Base["人X"] = 144
 			JY.Base["人Y"] = 218
 			JY.Base["人X1"] = 30
@@ -270,7 +270,6 @@ function StartMenu()
 		else								--其他人
 			CallCEvent(691)
 		end
-		
 		--畅想开局获得自身的装备
 		if JY.Base["畅想"] > 0 then
 			if JY.Person[0]["武器"] ~= - 1 then
@@ -435,7 +434,7 @@ function NewGame()     --选择新游戏，设置主角初始属性
 		if DrawStrBoxYesNo(-1, -1, "是否选用特殊主角进行游戏？", C_WHITE, CC.DefaultFont) == true then
 			ClsN()
 			--特殊主角的贴图
-			JY.Person[0]["姓名"] = "无酒不欢"
+			JY.Person[0]["姓名"] = "黄裳"
 			JY.Person[0]["头像代号"] = 355
 			local T_ani = {
 				{0, 0, 0}, 
@@ -455,7 +454,7 @@ function NewGame()     --选择新游戏，设置主角初始属性
 			
 			--女主角初始化
 			if gender == 2 then
-				JY.Person[0]["姓名"] = "凡芯儿"
+				JY.Person[0]["姓名"] = "葵花皇后"
 				JY.Person[0]["性别"] = 1
 				JY.Person[0]["外号"] = "姑娘"
 				JY.Person[0]["外号2"] = "丫头"
@@ -954,7 +953,6 @@ end
 --游戏主循环
 function Game_Cycle()
     lib.Debug("Start game cycle");
-
     while JY.Status ~=GAME_END and JY.Status ~=GAME_START do
 		if JY.Restart == 1 then
 			break
@@ -969,7 +967,6 @@ function Game_Cycle()
         if JY.Mytick%1000==0 then
             JY.MYtick=0;
         end
-
         if JY.Status==GAME_FIRSTMMAP then  --首次显示主场景，重新调用主场景贴图，渐变显示。然后转到正常显示
 			CleanMemory()
 			lib.ShowSlow(20, 1)
@@ -1435,7 +1432,7 @@ function CanEnterScene(x,y)         --场景是否可进
 		   (x==scene["外景入口X2"] and y==scene["外景入口Y2"]) then
 			local e=scene["进入条件"];
 			if e==0 then        --可进
-				return id;
+				return JY.Scene[id]["代号"];
 			elseif e==1 then    --不可进
 				return -1
 			end
@@ -1698,7 +1695,7 @@ end
 --回营整备
 function Menu_HYZB()
 	if JY.SubScene ~= 25 then
-		JY.SubScene = 70
+		JY.SubScene = CC.NewGameSceneID
 		JY.Base["人X1"] = 8
 		JY.Base["人Y1"] = 28
 		JY.Base["人X"] = 358
@@ -1829,7 +1826,7 @@ function Menu_PersonExit()
 	if r == 1 then
 		DrawStrBoxWaitKey("抱歉！没有你游戏进行不下去", C_GOLD, CC.DefaultFont, nil, LimeGreen)
 	else
-		if JY.SubScene == 82 then
+		if JY.SubScene == 82 then	-- 梅庄地牢
 			do return end
 		end
 	end
