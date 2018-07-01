@@ -1289,7 +1289,7 @@ function War_WugongHurtLife(enemyid, wugong, level, ang, x, y)
 			dng = dng + 600
 		end
 		WAR.Person[enemyid]["特效动画"] = 93
-		Set_Eff_Text(enemyid, "特效文字2", "枯荣真气")
+		Set_Eff_Text(enemyid, "特效文字2", "枯禅真气")
 		WAR.ZQHT = 1
     end
 	
@@ -3059,7 +3059,7 @@ function War_WugongHurtLife(enemyid, wugong, level, ang, x, y)
 	--石破天觉醒后，有30%几率挨打回血
 	if match_ID_awakened(eid, 38, 1) and DWPD() and math.random(10) < 4 then
 		hurt = -math.modf(hurt/2)
-		WAR.Person[enemyid]["特效文字2"] = "混沦太玄"
+		WAR.Person[enemyid]["特效文字2"] = "谁能书阁下，白首太玄经"
 		WAR.Person[enemyid]["特效动画"] = 147
 	end
 	
@@ -6045,8 +6045,9 @@ function War_AddPersonLVUP(pid)
 			local shade_color = C_GOLD
 			if i ==  current then
 				shade_color = PinkRed
+				DrawString(CC.ScreenW/2-CC.Fontsmall*7, 24+i*(CC.FontSmall4+CC.PersonStateRowPixel), "＋",shade_color, CC.Fontsmall);
 			end
-			DrawString(CC.ScreenW/2-CC.Fontsmall*7, 24+i*(CC.FontSmall4+CC.PersonStateRowPixel), "→",shade_color, CC.Fontsmall);
+			
 		end
 		ShowScreen()
 		local keypress, ktype, mx, my = WaitKey()
@@ -6089,7 +6090,7 @@ function War_AddPersonLVUP(pid)
 					Cls();
 					break
 				else
-					DrawStrBoxWaitKey("对不起，"..JY.Person[pid]["姓名"].."还有剩余的点数没加!", C_WHITE, CC.DefaultFont)
+					DrawStrBoxWaitKey(JY.Person[pid]["姓名"].."请加完剩余的点数!", C_WHITE, CC.DefaultFont)
 				end
 			end
 		end
@@ -6562,7 +6563,7 @@ function War_Fight_Sub(id, wugongnum, x, y)
 					for i = 1, 30 do
 						DrawStrBox(-1, 24, "黯然销魂.物我两忘.黯然三叠浪", M_DeepSkyBlue, 10 + i)
 						ShowScreen()
-						lib.Delay(10)
+						lib.Delay(16)
 					end
 				else
 					fightnum = 2;
@@ -6599,7 +6600,7 @@ function War_Fight_Sub(id, wugongnum, x, y)
 			for i = 1, 30 do
 				DrawStrBox(-1, 24, display, color, 10 + i)
 				ShowScreen()
-				lib.Delay(10)
+				lib.Delay(16)
 			end
 		end
 		--NPC乔峰回内
@@ -6629,7 +6630,7 @@ function War_Fight_Sub(id, wugongnum, x, y)
 		for i = 1, 30 do
 			DrawStrBox(-1, 24, "桃花绝技·奇门五转", PinkRed, 10 + i)
 			ShowScreen()
-			lib.Delay(10)
+			lib.Delay(16)
 		end
 	end
 	
@@ -6639,7 +6640,7 @@ function War_Fight_Sub(id, wugongnum, x, y)
 		for i = 1, 30 do
 			DrawStrBox(-1, 24, "剑魔再临·动如雷震", M_Red, 10 + i)
 			ShowScreen()
-			lib.Delay(10)
+			lib.Delay(16)
 		end
 	end
 	
@@ -6650,7 +6651,7 @@ function War_Fight_Sub(id, wugongnum, x, y)
 		for i = 1, 30 do
 			DrawStrBox(-1, 24, "黯然销魂.物我两忘.黯然三叠浪", M_DeepSkyBlue, 10 + i)
 			ShowScreen()
-			lib.Delay(10)
+			lib.Delay(16)
 		end
 	end
   
@@ -7039,11 +7040,11 @@ function War_Fight_Sub(id, wugongnum, x, y)
     	end
     	local nl = JY.Person[pid]["内力"];
     	local f = 0;
-		local chance = 70
+		local chance = 50
 		local force = 100
 		--主运提高效果
 		if Curr_NG(pid, 92) then
-			chance = 100
+			chance = 70
 			force = 200
 		end
 		--一般人需要内力差大于2000，而谢逊只要内力差大于0即可
@@ -8472,9 +8473,9 @@ function War_Fight_Sub(id, wugongnum, x, y)
 				WAR.YYBJ = 13
 			end
 			--保底天书数量-7
-			if JY.Base["天书数量"] > 7 then
-				if WAR.YYBJ < JY.Base["天书数量"] - 7 then
-					WAR.YYBJ = JY.Base["天书数量"] - 7
+			if JY.Base["天书数量"] > 6 then
+				if WAR.YYBJ < JY.Base["天书数量"] - 1 then
+					WAR.YYBJ = JY.Base["天书数量"] - 1
 				end
 			end
 		else
@@ -15962,24 +15963,24 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 						strs[j] = strs[j];
 						off = off + 42
 					end		
-					DrawStrBox(-1, 10 + off, strs[j], color, 10+i) 
+					DrawStrBox(-1, 10 + off, strs[j], color, 20+i) 
 					--off = off + string.len(strs[j])*(CC.DefaultFont+i/2)/4 + (CC.DefaultFont+i/2)*3/2;
 				end
-				ShowScreen()		  
-				lib.Delay(10)
+				ShowScreen()
+				lib.Delay(16)
 				if i == 20 then
-					lib.Delay(30)
+					lib.Delay(300)
 				end
 				Cls()
 			end
 		end
 		--武功显示
-		for i = 5, 10 do
+		for i = 1, 16 do
 			KungfuString(kfname, CC.ScreenW / 2 -#kfname/2, CC.ScreenH / 3 - 20 - hb  , C_GOLD, CC.FontBig+i, CC.FontName, 0)
 			ShowScreen()
 			  
-			lib.Delay(2)
-			if i == 10 then
+			lib.Delay(8)
+			if i == 16 then
 				lib.Delay(300)
 			end
 			Cls()
@@ -15988,7 +15989,7 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 	
 	--暗器显示
 	if using_anqi == 1 then
-		for i = 5, 10 do
+		for i = 1, 30 do
 			if WAR.KHSZ == 1 then
 				KungfuString("葵花神针", CC.ScreenW / 2 -#anqi_name/2, CC.ScreenH / 3 - 20 - hb  , C_RED, CC.FontBig+i, CC.FontName, 0)
 			else
@@ -15997,7 +15998,7 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 			ShowScreen()
 			  
 			lib.Delay(2)
-			if i == 10 then
+			if i == 30 then
 				lib.Delay(300)
 			end
 			Cls()
@@ -16094,7 +16095,7 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 					KungfuString(WAR.Person[WAR.CurID]["特效文字3"], CC.ScreenW / 2, CC.ScreenH / 2 - hb, C_WHITE, CC.FontSmall5, CC.FontName, 1)
 				end
 				ShowScreen()
-				lib.Delay(30)
+				lib.Delay(45)
 				lib.LoadSur(ssid, CC.ScreenW/2 - 11 * CC.XScale, CC.ScreenH/2 - hb - 18 * CC.YScale)
 			  
 			end
@@ -16106,7 +16107,7 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 				KungfuString(WAR.Person[WAR.CurID]["特效文字1"], CC.ScreenW / 2, CC.ScreenH / 2 - hb, C_RED, CC.FontSmall5, CC.FontName, 3)
 				KungfuString(WAR.Person[WAR.CurID]["特效文字2"], CC.ScreenW / 2, CC.ScreenH / 2 - hb, C_GOLD, CC.FontSmall5, CC.FontName, 2)
 				KungfuString(WAR.Person[WAR.CurID]["特效文字3"], CC.ScreenW / 2, CC.ScreenH / 2 - hb, C_WHITE, CC.FontSmall5, CC.FontName, 1)
-				lib.Delay(30)
+				lib.Delay(45)
 			end
 		end
     else
@@ -16788,12 +16789,12 @@ function DrawTimeBar2()
 			lib.LoadSur(surid, x1 - (10 + (x2 - x1) / 2), 0)
 			DrawTimeBar_sub(x1, x2, y, 1)
 			ShowScreen()
-			lib.Delay(8)
+			lib.Delay(24)
 		else
 			break;
 		end
 	end
-	lib.Delay(100)
+	lib.Delay(360)
 	lib.FreeSur(surid)
 end
 
@@ -17421,7 +17422,7 @@ function DrawTimeBar()
 		if WAR.JSX_Counter == 10 then
 			WAR.JSX_Counter = 1
 		end
-		lib.Delay(10) -- 无酒不欢：减缓集气条速度	
+		lib.Delay(24) -- 无酒不欢：减缓集气条速度	
 		
 		--集气过程中按空格或回车停止自动
 		local keypress = lib.GetKey()
@@ -18119,7 +18120,7 @@ function HP_Display_When_Idle()
 					
 			local pid = WAR.Person[k]["人物编号"]
 
-			local Color = RGB(238,44, 44)
+			local Color = LIFE_BAR_ENERMY
 			--local Color1 = RGB(30, 144, 255)
 			
 			local HP_MAX = JY.Person[pid]["生命最大值"]
@@ -18129,10 +18130,14 @@ function HP_Display_When_Idle()
 			if Current_HP < 0 then
 				Current_HP = 0
 			end
-
-			--友军NPC显示为绿色血条
+			--友军血条
 			if WAR.Person[k]["我方"] == true then
-				Color = RGB(0, 238, 0)
+				Color = LIFE_BAR_SELF
+			end
+			-- NPC队友
+			local uid = WAR.Person[k]["人物编号"]
+			if uid > 0 and (uid == WAR.Data["自动选择参战人1"] or uid == WAR.Data["自动选择参战人2"] or uid == WAR.Data["自动选择参战人3"] or uid == WAR.Data["自动选择参战人4"] or uid == WAR.Data["自动选择参战人5"] or uid == WAR.Data["自动选择参战人6"]) then
+				Color = LIFE_BAR_FRIEND
 			end
 
 			lib.FillColor(rx-CC.XScale*1.4, ry-CC.YScale*20/9, rx+CC.XScale*1.4, ry-CC.YScale*15/9,grey21)	--背景
@@ -18165,7 +18170,7 @@ function HP_Display_When_Hit(ssxx)
 					
 			local pid = WAR.Person[k]["人物编号"]
 
-			local Color = RGB(238,44, 44)
+			local Color = LIFE_BAR_ENERMY
 			--local Color1 = RGB(30, 144, 255)
 			
 			--计算掉血
@@ -18188,9 +18193,14 @@ function HP_Display_When_Hit(ssxx)
 			Gradual_HP_Display = HP_BeforeHit - Gradual_HP_Loss
 			
 			
-			--友军NPC显示为绿色血条
+			--友军血条
 			if WAR.Person[k]["我方"] == true then
-				Color = RGB(0, 238, 0)
+				Color = LIFE_BAR_SELF
+			end
+			-- NPC队友
+			local uid = WAR.Person[k]["人物编号"]
+			if uid > 0 and (uid == WAR.Data["自动选择参战人1"] or uid == WAR.Data["自动选择参战人2"] or uid == WAR.Data["自动选择参战人3"] or uid == WAR.Data["自动选择参战人4"] or uid == WAR.Data["自动选择参战人5"] or uid == WAR.Data["自动选择参战人6"]) then
+				Color = LIFE_BAR_FRIEND
 			end
 			
 			lib.FillColor(rx-CC.XScale*1.4, ry-CC.YScale*20/9, rx+CC.XScale*1.4, ry-CC.YScale*15/9,grey21)	--背景
@@ -18199,6 +18209,7 @@ function HP_Display_When_Hit(ssxx)
 			
 			--掉血显示
 			if HP_Loss > 0 then
+				Color = C_WHITE
 				lib.FillColor(rx-CC.XScale*1.4+(HP_AfterHit/HP_MAX)*(2.8*CC.XScale), ry-CC.YScale*20/9, rx-CC.XScale*1.4+(Gradual_HP_Display/HP_MAX)*(2.8*CC.XScale), ry-CC.YScale*15/9, Color)  --失去生命
 			end
 		
