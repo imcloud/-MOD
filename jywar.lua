@@ -5878,11 +5878,11 @@ function War_Auto()
 	return 0
 end
 -- 升级加点逻辑
-function War_PointChangeCompute(current, tmpN, symbol)
+function War_PointChangeCompute(current, tmpN, symbol, pid)
 	local point = tmpN
 	local change = 3
 	if point <= 3 then
-		chance = 1
+		change = 1
 	end
 	if current == 1 and JY.Person[pid]["攻击力"] > gj then
 		JY.Person[pid]["攻击力"] = JY.Person[pid]["攻击力"] + change * symbol
@@ -6090,7 +6090,7 @@ function War_AddPersonLVUP(pid)
 					Cls();
 					break
 				else
-					tmpN = War_PointChangeCompute(current, tmpN, 1)
+					tmpN = War_PointChangeCompute(current, tmpN, 1, pid)
 				end
 			end
 		end
@@ -16453,6 +16453,7 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 			end
 			local flag = false;
 			local baojiSize = 1.00
+            local strWidth = 0
 			for i = 5, 15 do
 				local tstart = lib.GetTime()
 				local y_off = i * 2 + CC.DefaultFont + CC.RowPixel
@@ -16464,6 +16465,9 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 						local c = y - 1;
 						--无酒不欢：这里用字符串的首位判定是否为掉血
 						if y == 3 and HitXY[j][y] ~= nil and string.sub(HitXY[j][y],1,1) == "-" then
+							if strWidth == 0 then
+								strWidth = string.len(HitXY[j][y]) * CC.DefaultFont / 2
+							end
 							if CONFIG.HPDisplay == 1 then
 								HP_Display_When_Hit(i) --无酒不欢：实时显血
 							end
@@ -16474,7 +16478,9 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 									baojiSize = baojiSize - 0.07
 								end
 							end
-							DrawString(clips[j].x1 - string.len(HitXY[j][y])*CC.DefaultFont/4, clips[j].y1 - y_off, HitXY[j][y], Color_Hurt1, CC.DefaultFont * baojiSize)
+							local baojiWidth = string.len(HitXY[j][y]) * CC.DefaultFont * baojiSize / 2
+							local drawX = clips[j].x1 - string.len(HitXY[j][y])*CC.DefaultFont/4
+							DrawString(drawX - (baojiWidth - strWidth)/2, clips[j].y1 - y_off, HitXY[j][y], Color_Hurt1, CC.DefaultFont * baojiSize)
 						else
 							--无酒不欢：双排显示暂时这样写了
 							local spacing = 0

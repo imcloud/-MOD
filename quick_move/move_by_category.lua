@@ -321,8 +321,10 @@ function showSceneMenu(sceneList, x1, y1, maxlength, height)
 			end
 			--选中确认
 			if  keyPress==VK_SPACE or keyPress==VK_RETURN or ktype == 5 or (ktype == 3 and mk) then
-				returnValue = sceneList[current][3]
-				break
+				if sceneList[current][2] == 0 then
+					returnValue = sceneList[current][3]
+					break
+				end
 			end		
 		end
 	end
