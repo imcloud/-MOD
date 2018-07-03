@@ -52,7 +52,7 @@ function SetGlobal()  	 --设置游戏内部使用的全程变量
    
 	JY.MyCurrentPic = 0		--主角当前走路贴图在贴图文件中偏移
 	JY.MyPic = 0     		--主角当前贴图
-	JY.Mytick = 0			--主角没有走路的持续帧数
+	JY.Mytick = 30			--主角没有走路的持续帧数
 	JY.MyTick2 = 0			--显示事件动画的节拍
 	JY.LOADTIME = 0
 	JY.SAVETIME = 0
@@ -222,15 +222,15 @@ end
 
 function StartMenu()
 	Cls()
-	--[[
-	local menu={  {"重新开始",nil,1},
+	
+	local menu={  {"踏入江湖",nil,1},
 	              {"载入进度",nil,1},
 	              {"离开游戏",nil,1}  };
 	local menux=(CC.ScreenW-4*CC.StartMenuFontSize-2*CC.MenuBorderPixel)/2
 
 	local menuReturn=ShowMenu(menu,3,0,menux,CC.StartMenuY,0,0,0,0,CC.StartMenuFontSize,C_STARTMENU, C_RED)
-	Cls();]]
-	local menuReturn = TitleSelection()
+	Cls();
+	--local menuReturn = TitleSelection()
     if menuReturn == 1 then        --重新开始游戏
 		NewGame();   		       --设置新游戏数据
 		if JY.Restart == 1 then
@@ -1160,7 +1160,7 @@ function Game_MMap()      --主地图
         y=JY.Base["人Y"]+CC.DirectY[direct+1];
         JY.Base["人方向"]=direct;
 		if JY.WalkCount == 1 then
-			lib.Delay(90)
+			lib.Delay(190)
 		end
     else
         x=JY.Base["人X"];
@@ -2192,7 +2192,7 @@ end
 
 --无酒不欢：人物属性面板
 --case：nil=正常浏览，else加点
-function ShowPersonStatus_sub(id, page, istart, tfid, max_row, case, AI_s1, AI_s2, AI_menu_selected,AniFrame,dl)
+function ShowPersonStatus_sub(id, page, istart, tfid, max_row, case, AI_s1, AI_s2, AI_menu_selected,AniFrame,dl, isAddPoint)
 	if JY.Restart == 1 then
 		do return end
 	end
@@ -2670,18 +2670,24 @@ function ShowPersonStatus_sub(id, page, istart, tfid, max_row, case, AI_s1, AI_s
 				end
 			end
 		end
-		
-		DrawAttrib("攻击力", C_WHITE, C_GOLD)
-		DrawString(x1 + size * 4, y1, "↑ " .. str_gain, Violet, size)
-		DrawAttrib("防御力", C_WHITE, C_GOLD)
-		DrawString(x1 + size * 4, y1 + h, "↑ " .. def_gain, Violet, size)
-		DrawAttrib("轻功", C_WHITE, C_GOLD)
-		if agi_gain > -1 then
-			DrawString(x1 + size * 4, y1 + h * 2, "↑ " .. agi_gain, Violet, size)
+		if isAddPoint then
+			DrawAttrib("攻击力", PinkRed, PinkRed)
+			DrawAttrib("防御力", PinkRed, PinkRed)
+			DrawAttrib("轻功", PinkRed, PinkRed)
 		else
-			agi_gain = -(agi_gain)
-			DrawString(x1 + size * 4, y1 + h * 2, "↓ " .. agi_gain, Violet, size)
+			DrawAttrib("攻击力", C_WHITE, C_GOLD)
+			DrawString(x1 + size * 4, y1, "↑ " .. str_gain, Violet, size)
+			DrawAttrib("防御力", C_WHITE, C_GOLD)
+			DrawString(x1 + size * 4, y1 + h, "↑ " .. def_gain, Violet, size)
+			DrawAttrib("轻功", C_WHITE, C_GOLD)
+			if agi_gain > -1 then
+				DrawString(x1 + size * 4, y1 + h * 2, "↑ " .. agi_gain, Violet, size)
+			else
+				agi_gain = -(agi_gain)
+				DrawString(x1 + size * 4, y1 + h * 2, "↓ " .. agi_gain, Violet, size)
+			end
 		end
+		
 		
 		--能力属性
 		DrawAttrib("拳掌功夫", C_WHITE, C_GOLD)
