@@ -23,17 +23,17 @@ function createSceneData()
 		{JY.Scene[69]["名称"], JY.Scene[69]["进入条件"], 69}, -- 天上人间
 		{JY.Scene[107]["名称"], JY.Scene[107]["进入条件"], 107}, -- 北京
 		{JY.Scene[115]["名称"], JY.Scene[115]["进入条件"], 115}, -- 襄阳城外
-		{JY.Scene[32]["名称"], JY.Scene[32]["进入条件"], 92}, -- 牛家村
+		{JY.Scene[32]["名称"], JY.Scene[32]["进入条件"], 32}, -- 牛家村
 		{JY.Scene[105]["名称"], JY.Scene[105]["进入条件"], 105} -- 西部农村
 	}
 	-- 庄园居所
 	scene[2] = {
 		{JY.Scene[0]["名称"], JY.Scene[0]["进入条件"], 0}, -- 胡斐居
-		{JY.Scene[50]["名称"], JY.Scene[50]["进入条件"], 60}, --閰基居
+		{JY.Scene[50]["名称"], JY.Scene[50]["进入条件"], 50}, --閰基居
 		{JY.Scene[9]["名称"], JY.Scene[9]["进入条件"], 9}, --成昆居
 		{JY.Scene[45]["名称"], JY.Scene[45]["进入条件"], 45}, --程英居
 		{JY.Scene[47]["名称"], JY.Scene[47]["进入条件"], 47}, --一灯居
-		{JY.Scene[102]["名称"], JY.Scene[1]["进入条件"], 1}, --老祖居
+		{JY.Scene[102]["名称"], JY.Scene[102]["进入条件"], 102}, --老祖居
 		{JY.Scene[24]["名称"], JY.Scene[24]["进入条件"], 24}, --苗人凤居
 		{JY.Scene[23]["名称"], JY.Scene[23]["进入条件"], 23}, --洪七公居
 		{JY.Scene[30]["名称"], JY.Scene[30]["进入条件"], 30}, --平一指居
@@ -228,7 +228,7 @@ function showMoveMenu()
 			--选中确认
 			if  keyPress==VK_SPACE or keyPress==VK_RETURN or keyPress == VK_RIGHT or ktype == 5 or (ktype == 3 and mk) then
 				local result = showSceneMenu(curTypeList ,secItemX1, y1, maxlength, secHeight)
-				if result > 0 then
+				if result >= 0 then
 					returnValue = result
 					break
 				end

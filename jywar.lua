@@ -5878,20 +5878,20 @@ function War_Auto()
 	return 0
 end
 -- Éý¼¶¼ÓµãÂß¼­
-function War_PointChangeCompute(current, tmpN, symbol, pid)
+function War_PointChangeCompute(current, tmpN, symbol, pid, gj, fy, qg)
 	local point = tmpN
 	local change = 3
 	if point <= 3 then
 		change = 1
 	end
-	if current == 1 and JY.Person[pid]["¹¥»÷Á¦"] > gj then
-		JY.Person[pid]["¹¥»÷Á¦"] = JY.Person[pid]["¹¥»÷Á¦"] + change * symbol
+	if current == 1 then
+		JY.Person[pid]["¹¥»÷Á¦"] = JY.Person[pid]["¹¥»÷Á¦"] + change * -symbol
 		point = point + change * symbol
-	elseif current == 2 and JY.Person[pid]["·ÀÓùÁ¦"] > fy then
-		JY.Person[pid]["·ÀÓùÁ¦"] = JY.Person[pid]["·ÀÓùÁ¦"] + change * symbol
+	elseif current == 2 then
+		JY.Person[pid]["·ÀÓùÁ¦"] = JY.Person[pid]["·ÀÓùÁ¦"] + change * -symbol
 		point = point + change * symbol
-	elseif current == 3 and JY.Person[pid]["Çá¹¦"] > qg then
-		JY.Person[pid]["Çá¹¦"] = JY.Person[pid]["Çá¹¦"] + change * symbol
+	elseif current == 3 then
+		JY.Person[pid]["Çá¹¦"] = JY.Person[pid]["Çá¹¦"] + change * -symbol
 		point = point + change * symbol
 	end
 	return point
@@ -6082,15 +6082,15 @@ function War_AddPersonLVUP(pid)
 					current = 1
 				end
 			elseif keypress == VK_LEFT and tmpN < n then
-				tmpN = War_PointChangeCompute(current, tmpN, -1)
+				tmpN = War_PointChangeCompute(current, tmpN, -1, pid, gj, fy, qg)
 			elseif keypress == VK_RIGHT and tmpN > 0 then
-				tmpN = War_PointChangeCompute(current, tmpN, 1)
+				tmpN = War_PointChangeCompute(current, tmpN, 1, pid, gj, fy, qg)
 			elseif keypress==VK_SPACE or keypress==VK_RETURN then
 				if tmpN == 0 or (JY.Person[pid]["¹¥»÷Á¦"] == 520 and JY.Person[pid]["·ÀÓùÁ¦"] == 520 and JY.Person[pid]["Çá¹¦"] == 520) then
 					Cls();
 					break
 				else
-					tmpN = War_PointChangeCompute(current, tmpN, 1, pid)
+					tmpN = War_PointChangeCompute(current, tmpN, -1, pid, gj, fy, qg)
 				end
 			end
 		end

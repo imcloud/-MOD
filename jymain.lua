@@ -999,11 +999,16 @@ function Game_MMap()      --主地图
     for i = VK_RIGHT,VK_UP do
         if i ~= CC.PrevKeypress and lib.GetKeyState(i) ~=0 then
 			keypress = i
+            JY.WalkCount = 0
 		end
-	end 
+	end
     --如果与上次不同的方向未被按下，则检测与上次相同的方向是否被按下
 	if keypress==-1 and	lib.GetKeyState(CC.PrevKeypress) ~=0 then
 		keypress = CC.PrevKeypress
+        if JY.WalkCount == 1 then
+            JY.WalkCount = JY.WalkCount + 1
+            return ;
+        end
 	end
     CC.PrevKeypress = keypress
     if keypress==VK_UP then
@@ -3843,36 +3848,40 @@ function Game_SMap()         --场景处理主函数
 		return 
 	end
 
-    local x,y;
+    local targetX, targetY;
     local direct = -1;
     local keypress, ktype, mx, my = lib.GetKey();
-	--先检测跟上次不同的方向是否被按下
+    --先检测跟上次不同的方向是否被按下
     for i = VK_RIGHT,VK_UP do
         if i ~= CC.PrevKeypress and lib.GetKeyState(i) ~=0 then
-			keypress = i
-		end
-	end 
+            keypress = i
+            JY.WalkCount = 0
+        end
+    end
     --如果与上次不同的方向未被按下，则检测与上次相同的方向是否被按下
-	if keypress==-1 and	lib.GetKeyState(CC.PrevKeypress) ~=0 then
-		keypress = CC.PrevKeypress
-	end
+    if keypress==-1 and	lib.GetKeyState(CC.PrevKeypress) ~=0 then
+        keypress = CC.PrevKeypress
+        if JY.WalkCount == 1 then
+            JY.WalkCount = JY.WalkCount + 1
+            return ;
+        end
+    end
     CC.PrevKeypress = keypress
     if keypress==VK_UP then
-		direct=0;
-		JY.WalkCount = JY.WalkCount + 1
-	elseif keypress==VK_DOWN then
-		direct=3;
-		JY.WalkCount = JY.WalkCount + 1
-	elseif keypress==VK_LEFT then
-		direct=2;
-		JY.WalkCount = JY.WalkCount + 1
-	elseif keypress==VK_RIGHT then
-		direct=1;
-		JY.WalkCount = JY.WalkCount + 1
-	else
-		JY.WalkCount = 0
-	end
-	
+        direct=0;
+        JY.WalkCount = JY.WalkCount + 1
+    elseif keypress==VK_DOWN then
+        direct=3;
+        JY.WalkCount = JY.WalkCount + 1
+    elseif keypress==VK_LEFT then
+        direct=2;
+        JY.WalkCount = JY.WalkCount + 1
+    elseif keypress==VK_RIGHT then
+        direct=1;
+        JY.WalkCount = JY.WalkCount + 1
+    else
+        JY.WalkCount = 0
+    end
 	if ktype == 1 then
 		JY.Mytick=0;
 		if keypress==VK_ESCAPE then
@@ -3972,25 +3981,25 @@ function Game_SMap()         --场景处理主函数
 			CC.AutoMoveEvent[2] = 0;
 		end
 	end
-	
+
     if direct ~= -1 then
         AddMyCurrentPic();
-        x=JY.Base["人X1"]+CC.DirectX[direct+1];
-        y=JY.Base["人Y1"]+CC.DirectY[direct+1];
+        targetX =JY.Base["人X1"]+CC.DirectX[direct+1];
+        targetY =JY.Base["人Y1"]+CC.DirectY[direct+1];
         JY.Base["人方向"]=direct;
 		if JY.WalkCount == 1 then
-			lib.Delay(90)
+			lib.Delay(95)
 		end
     else
-        x=JY.Base["人X1"];
-        y=JY.Base["人Y1"];
+        targetX =JY.Base["人X1"];
+        targetY =JY.Base["人Y1"];
     end
 
     JY.MyPic=GetMyPic();
     DtoSMap();
-    if SceneCanPass(x,y)==true then          --新的坐标可以走过去
-        JY.Base["人X1"]=x;
-        JY.Base["人Y1"]=y;
+    if SceneCanPass(targetX, targetY)==true then          --新的坐标可以走过去
+        JY.Base["人X1"]= targetX;
+        JY.Base["人Y1"]= targetY;
     end
 
     JY.Base["人X1"]=limitX(JY.Base["人X1"],1,CC.SWidth-2);
@@ -8199,6 +8208,7 @@ end
 --y进入子场景后人物的Y坐标，传入-1则默认为入口Y
 --direct人物面对的方向
 function My_Enter_SubScene(sceneid,x,y,direct)
+	print("enter scene ----------------------- 1")
 	--从大地图进入子场景前自动保存到10号档
 	if JY.Status == GAME_MMAP then
 		SaveRecord(10)
@@ -8245,7 +8255,7 @@ function My_Enter_SubScene(sceneid,x,y,direct)
 
 
 	Init_SMap(flag);  --重新初始化地图
-  
+  	print("enter scene ----------------------- ", sceneid)
 	if flag == 0 then    --如果是自定义位置，先传送到那个位置，再显示场景名称
 		DrawStrBox(-1,10,JY.Scene[JY.SubScene]["名称"],C_WHITE,CC.DefaultFont);
 		ShowScreen();
