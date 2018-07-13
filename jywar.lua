@@ -15950,7 +15950,7 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 			local color = RGB(255,40,10);
 
 			for j=1, n do
-				for i=1, 20 do
+				for i=10, 20 do
 					local off = 0;
 					if strs[j] == "连击" or strs[j] == "天赋外功.炉火纯青" 
 					or strs[j] == "碧箫声里双鸣凤" or strs[j] == "英雄无双风流婿" or strs[j] == "刀光掩映孔雀屏" 
@@ -15966,12 +15966,12 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 						strs[j] = strs[j];
 						off = off + 48
 					end		
-					DrawStrBox(-1, 10 + off, strs[j], color, 20+i) 
+					DrawStrBox(-1, 10 + off, strs[j], color, 20+i)
 					--off = off + string.len(strs[j])*(CC.DefaultFont+i/2)/4 + (CC.DefaultFont+i/2)*3/2;
 					ShowScreen()
 					lib.Delay(16)
 					if i == 20 then
-						lib.Delay(300)
+						lib.Delay(240)
 					end
 					Cls()
 				end
@@ -16452,6 +16452,7 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 				break
 			end
 			local flag = false;
+			-- 暴击时 数字跳动
 			local baojiSize = 1.00
             local strWidth = 0
 			for i = 5, 15 do
@@ -16473,11 +16474,12 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 							end
 							if isBaoJiAttack then
 								if i <= 8 then
-									baojiSize = baojiSize + 0.12
+									baojiSize = baojiSize + 0.08
 								else
-									baojiSize = baojiSize - 0.07
+									baojiSize = baojiSize - 0.03
 								end
 							end
+							-- 因数字跳动需要 重新计算显示位置
 							local baojiWidth = string.len(HitXY[j][y]) * CC.DefaultFont * baojiSize / 2
 							local drawX = clips[j].x1 - string.len(HitXY[j][y])*CC.DefaultFont/4
 							DrawString(drawX - (baojiWidth - strWidth)/2, clips[j].y1 - y_off, HitXY[j][y], Color_Hurt1, CC.DefaultFont * baojiSize)

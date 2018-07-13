@@ -115,8 +115,8 @@ function SetGlobalConst()
 	LightYellow = RGB(255, 242, 204)
 	LightYellow2 = RGB(255, 229, 153)
 	LightYellow3 = RGB(255, 217, 102)
-	LIFE_BAR_SELF = RGB(34, 116, 185)
-	LIFE_BAR_FRIEND = RGB(238, 161, 59)
+	LIFE_BAR_SELF = RGB(99, 219, 36)
+	LIFE_BAR_FRIEND = RGB(34, 116, 185)
 	LIFE_BAR_ENERMY = RGB(192,57, 98)
 
 	-- ÓÎÏ·×´Ì¬¶¨Òå
