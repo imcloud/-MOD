@@ -16473,16 +16473,16 @@ function War_ShowFight(pid, wugong, wugongtype, level, x, y, eft, ZHEN_ID)
 								HP_Display_When_Hit(i) --无酒不欢：实时显血
 							end
 							if isBaoJiAttack then
-								if i <= 8 then
-									baojiSize = baojiSize + 0.08
+								if i <= 7 then
+									baojiSize = baojiSize + 4.00
 								else
-									baojiSize = baojiSize - 0.03
+									baojiSize = baojiSize - 1.50
 								end
 							end
 							-- 因数字跳动需要 重新计算显示位置
-							local baojiWidth = string.len(HitXY[j][y]) * CC.DefaultFont * baojiSize / 2
+							local baojiWidth = string.len(HitXY[j][y]) * (CC.DefaultFont + baojiSize) / 2
 							local drawX = clips[j].x1 - string.len(HitXY[j][y])*CC.DefaultFont/4
-							DrawString(drawX - (baojiWidth - strWidth)/2, clips[j].y1 - y_off, HitXY[j][y], Color_Hurt1, CC.DefaultFont * baojiSize)
+							DrawString(drawX - (baojiWidth - strWidth)/2, clips[j].y1 - y_off, HitXY[j][y], Color_Hurt1, CC.DefaultFont + baojiSize)
 						else
 							--无酒不欢：双排显示暂时这样写了
 							local spacing = 0
