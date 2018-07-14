@@ -289,18 +289,23 @@ function showSceneMenu(sceneList, x1, y1, maxlength, height)
 		local keyPress, ktype, mx, my = WaitKey(1)
 		lib.Delay(CC.Frame)
 
-		if keyPress==VK_ESCAPE or ktype == 4 then
+		if keyPress == VK_ESCAPE or ktype == 4 then
 			--Esc »ò ÍË³ö
 			break
-		elseif keyPress==VK_DOWN or ktype == 7 then                --Down
-			current = current +1;
+		elseif keyPress == VK_DOWN or ktype == 7 then                --Down
+			current = current + 1;
 			if current > num then
-				current =1;
+				current = 1;
 			end
-		elseif keyPress==VK_UP or ktype == 6 then                  --Up
+		elseif keyPress == VK_UP or ktype == 6 then                  --Up
 			current = current -1;
 			if current < 1 then
 				current = num;
+			end
+		elseif keyPress == VK_RIGHT then
+			current = current + 5;
+			if current > num then
+				current = 1;
 			end
 		elseif keyPress == VK_LEFT then
 			ClsN()

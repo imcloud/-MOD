@@ -6082,9 +6082,9 @@ function War_AddPersonLVUP(pid)
 					current = 1
 				end
 			elseif keypress == VK_LEFT and tmpN < n then
-				tmpN = War_PointChangeCompute(current, tmpN, -1, pid, gj, fy, qg)
-			elseif keypress == VK_RIGHT and tmpN > 0 then
 				tmpN = War_PointChangeCompute(current, tmpN, 1, pid, gj, fy, qg)
+			elseif keypress == VK_RIGHT and tmpN > 0 then
+				tmpN = War_PointChangeCompute(current, tmpN, -1, pid, gj, fy, qg)
 			elseif keypress==VK_SPACE or keypress==VK_RETURN then
 				if tmpN == 0 or (JY.Person[pid]["¹¥»÷Á¦"] == 520 and JY.Person[pid]["·ÀÓùÁ¦"] == 520 and JY.Person[pid]["Çá¹¦"] == 520) then
 					Cls();
